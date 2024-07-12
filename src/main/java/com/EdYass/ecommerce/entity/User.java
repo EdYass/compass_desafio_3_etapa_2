@@ -1,4 +1,3 @@
-// src/main/java/com/EdYass/ecommerce/entity/User.java
 package com.EdYass.ecommerce.entity;
 
 import jakarta.persistence.*;
@@ -27,10 +26,32 @@ public class User {
     @Size(min = 8)
     private String password;
 
+    @Getter
+    @Setter
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
     private Set<String> roles = new HashSet<>();
 
+    @Getter
+    @Setter
     private String resetToken;
+
+
+    public @NotBlank @Email String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@NotBlank @Email String email) {
+        this.email = email;
+    }
+
+    public @NotBlank @Size(min = 8) String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@NotBlank @Size(min = 8) String password) {
+        this.password = password;
+    }
+
 }
