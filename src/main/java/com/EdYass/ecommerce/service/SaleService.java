@@ -27,14 +27,19 @@ import java.util.stream.Collectors;
 
 @Service
 public class SaleService {
-    @Autowired
-    private SaleRepository saleRepository;
+
+    private final SaleRepository saleRepository;
+
+    private final SaleProductRepository saleProductRepository;
+
+    private final ProductRepository productRepository;
 
     @Autowired
-    private SaleProductRepository saleProductRepository;
-
-    @Autowired
-    private ProductRepository productRepository;
+    public SaleService(ProductRepository productRepository, SaleRepository saleRepository, SaleProductRepository saleProductRepository) {
+        this.productRepository = productRepository;
+        this.saleRepository = saleRepository;
+        this.saleProductRepository = saleProductRepository;
+    }
 
     @Cacheable(value = "sales")
     public List<SaleResponseDTO> getAllSales() {

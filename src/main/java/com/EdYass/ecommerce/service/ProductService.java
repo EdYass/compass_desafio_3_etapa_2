@@ -16,11 +16,16 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
+
+    private final ProductRepository productRepository;
+
+    private final SaleProductRepository saleProductRepository;
 
     @Autowired
-    private SaleProductRepository saleProductRepository;
+    public ProductService(ProductRepository productRepository, SaleProductRepository saleProductRepository) {
+        this.productRepository = productRepository;
+        this.saleProductRepository = saleProductRepository;
+    }
 
     @Cacheable("products")
     public List<Product> getAllProducts() {

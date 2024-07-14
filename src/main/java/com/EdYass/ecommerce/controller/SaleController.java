@@ -13,8 +13,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/sales")
 public class SaleController {
-    @Autowired
+
     private SaleService saleService;
+
+    @Autowired
+    public SaleController(SaleService saleService) {
+        this.saleService = saleService;
+    }
 
     @GetMapping
     public List<SaleResponseDTO> getAllSales() {
