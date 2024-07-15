@@ -37,7 +37,6 @@ public class User {
     @Setter
     private String resetToken;
 
-
     public @NotBlank @Email String getEmail() {
         return email;
     }
@@ -53,5 +52,4 @@ public class User {
     public void setPassword(@NotBlank @Size(min = 8) String password) {
         this.password = password;
     }
-
 }

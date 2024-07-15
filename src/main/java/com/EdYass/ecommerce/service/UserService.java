@@ -17,11 +17,13 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private final EmailService emailService;
+
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-
+        this.emailService = emailService;
     }
 
     public List<User> getAllUsers() {
@@ -60,12 +62,13 @@ public class UserService {
         if (user == null) {
             throw new RuntimeException("User not found");
         }
-        user.setResetToken(UUID.randomUUID().toString());
+        String token = UUID.randomUUID().toString();
+        user.setResetToken(token);
         userRepository.save(user);
-    }
 
-    public User getUserByResetToken(String resetToken) {
-        return userRepository.findByResetToken(resetToken);
+        String subject = "Password Reset Request";
+        String text = "To reset your password, please use the following token: " + token;
+        emailService.sendSimpleMessage(email, subject, text);
     }
 
     @Transactional
