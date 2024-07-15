@@ -1,14 +1,8 @@
 package com.EdYass.ecommerce.security;
 
 import com.EdYass.ecommerce.exception.JwtValidationException;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.security.SecurityException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +19,8 @@ public class JwtTokenProvider {
     private long jwtExpirationInMs;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secret) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        byte[] keyBytes = Keys.secretKeyFor(SignatureAlgorithm.HS512).getEncoded();
+        this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
     public String generateToken(String email, Set<String> roles) {

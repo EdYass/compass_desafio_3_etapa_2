@@ -37,4 +37,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleJwtValidationException(JwtValidationException ex) {
         return buildErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(UnauthorizedRoleException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorizedRoleException(UnauthorizedRoleException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.FORBIDDEN);
+    }
 }
