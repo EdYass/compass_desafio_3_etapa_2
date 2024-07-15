@@ -32,4 +32,9 @@ public class GlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse(status.value(), status.getReasonPhrase(), message);
         return new ResponseEntity<>(errorResponse, status);
     }
+
+    @ExceptionHandler(JwtValidationException.class)
+    public ResponseEntity<ErrorResponse> handleJwtValidationException(JwtValidationException ex) {
+        return buildErrorResponse(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
 }

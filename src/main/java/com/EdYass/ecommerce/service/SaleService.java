@@ -21,7 +21,6 @@ import org.springframework.cache.annotation.Cacheable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -173,7 +172,7 @@ public class SaleService {
 
     public List<SaleResponseDTO> getWeeklyReport() {
         LocalDateTime endDate = LocalDateTime.now();
-        LocalDateTime startDate = endDate.minus(1, ChronoUnit.WEEKS);
+        LocalDateTime startDate = endDate.minusWeeks(1);
         return filterSalesByDate(startDate, endDate);
     }
 
