@@ -2,9 +2,10 @@ package com.EdYass.ecommerce.controller;
 
 import com.EdYass.ecommerce.dto.JwtAuthenticationResponseDTO;
 import com.EdYass.ecommerce.dto.LoginRequestDTO;
-import com.EdYass.ecommerce.entity.User;
+import com.EdYass.ecommerce.dto.UserDTO;
 import com.EdYass.ecommerce.security.JwtTokenProvider;
 import com.EdYass.ecommerce.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -32,11 +33,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequestDTO loginRequestdto) {
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        loginRequestdto.getEmail(),
-                        loginRequestdto.getPassword()
+                        loginRequestDTO.getEmail(),
+                        loginRequestDTO.getPassword()
                 )
         );
 
@@ -47,8 +48,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        userService.createUser(user);
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserDTO userDTO) {
+        userService.createUser(userDTO);
         return ResponseEntity.ok("User registered successfully");
     }
 
