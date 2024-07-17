@@ -1,5 +1,6 @@
 package com.EdYass.ecommerce.security;
 
+import com.EdYass.ecommerce.exception.UnauthorizedRoleException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,6 @@ public class CheckPermission {
                 }
             }
         }
-        throw new RuntimeException("You do not have permission to perform this action");
+        throw new UnauthorizedRoleException("You do not have permission to perform this action");
     }
 }

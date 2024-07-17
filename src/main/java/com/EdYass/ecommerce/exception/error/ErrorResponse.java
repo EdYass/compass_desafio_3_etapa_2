@@ -1,4 +1,4 @@
-package com.EdYass.ecommerce.exception;
+package com.EdYass.ecommerce.exception.error;
 
 import lombok.Getter;
 import lombok.Setter;

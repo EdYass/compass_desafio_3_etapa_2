@@ -10,6 +10,7 @@ import com.EdYass.ecommerce.entity.User;
 import com.EdYass.ecommerce.exception.InsufficientStockException;
 import com.EdYass.ecommerce.exception.ProductNotFoundException;
 import com.EdYass.ecommerce.exception.SaleNotFoundException;
+import com.EdYass.ecommerce.exception.UserNotFoundException;
 import com.EdYass.ecommerce.repository.ProductRepository;
 import com.EdYass.ecommerce.repository.SaleProductRepository;
 import com.EdYass.ecommerce.repository.SaleRepository;
@@ -61,12 +62,10 @@ public class SaleService {
 
     @Transactional
     @CacheEvict(value = {"sales", "sale"}, allEntries = true)
-    public SaleResponseDTO createSale(SaleDTO saleDTO, String username) {
+    public SaleResponseDTO createSale(SaleDTO saleDTO, String email) {
         checkPermission.Permission("ADMIN", "BUYER");
-        User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
 
         Sale sale = new Sale();
         sale.setUser(user);
@@ -80,13 +79,10 @@ public class SaleService {
 
     @Transactional
     @CacheEvict(value = {"sales", "sale"}, allEntries = true)
-    public SaleResponseDTO updateSale(Long id, SaleDTO saleDTO, String username) {
+    public SaleResponseDTO updateSale(Long id, SaleDTO saleDTO, String email) {
         checkPermission.Permission("ADMIN", "BUYER");
-        User user = userRepository.findByEmail(username);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         Sale sale = saleRepository.findById(id)
                 .orElseThrow(() -> new SaleNotFoundException("Sale not found"));
 

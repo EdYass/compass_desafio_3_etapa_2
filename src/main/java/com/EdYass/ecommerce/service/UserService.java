@@ -2,6 +2,8 @@ package com.EdYass.ecommerce.service;
 
 import com.EdYass.ecommerce.dto.UserDTO;
 import com.EdYass.ecommerce.entity.User;
+import com.EdYass.ecommerce.exception.EmailAlreadyExistsException;
+import com.EdYass.ecommerce.exception.UserNotFoundException;
 import com.EdYass.ecommerce.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +50,15 @@ public class UserService {
         return userDTO;
     }
 
-    public User findByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public void findByEmail(String email) {
+        userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     @Transactional
     public UserDTO createUser(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
-            throw new RuntimeException("Email already registered");
+            throw new EmailAlreadyExistsException("Email is already in use");
         }
         User user = new User();
         user.setEmail(userDTO.getEmail());
@@ -87,10 +90,9 @@ public class UserService {
 
     @Transactional
     public void generateResetToken(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
+
         String token = UUID.randomUUID().toString();
         user.setResetToken(token);
         userRepository.save(user);
@@ -102,10 +104,8 @@ public class UserService {
 
     @Transactional
     public void resetPassword(String token, String newPassword) {
-        User user = userRepository.findByResetToken(token);
-        if (user == null) {
-            throw new RuntimeException("Invalid token");
-        }
+        User user = userRepository.findByResetToken(token)
+                .orElseThrow(() -> new RuntimeException("Invalid token"));
         user.setPassword(passwordEncoder.encode(newPassword));
         user.setResetToken(null);
         userRepository.save(user);
