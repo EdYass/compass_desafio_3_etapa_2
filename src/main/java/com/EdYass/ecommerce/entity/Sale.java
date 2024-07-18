@@ -21,6 +21,12 @@ public class Sale {
 
     @Getter
     @Setter
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Getter
+    @Setter
     @OneToMany(mappedBy = "sale", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SaleProduct> saleProducts;
 

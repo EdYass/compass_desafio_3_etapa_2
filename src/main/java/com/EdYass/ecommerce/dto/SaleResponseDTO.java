@@ -19,6 +19,9 @@ public class SaleResponseDTO {
     @NotNull
     private BigDecimal total;
 
+    @NotNull
+    private String userEmail;
+
     public @NotNull List<SaleProductDTO> getSaleProducts() {
         return saleProducts;
     }
@@ -49,5 +52,13 @@ public class SaleResponseDTO {
 
     public void setDate(@NotNull LocalDateTime date) {
         this.date = date;
+    }
+
+    public @NotNull String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(@NotNull String userEmail) {
+        this.userEmail = userEmail;
     }
 }

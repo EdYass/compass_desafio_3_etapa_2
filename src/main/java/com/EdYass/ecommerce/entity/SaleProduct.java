@@ -31,7 +31,6 @@ public class SaleProduct {
     @NotNull
     private BigDecimal price;
 
-
     public @NotNull BigDecimal getPrice() {
         return price;
     }
