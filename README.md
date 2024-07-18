@@ -15,7 +15,7 @@ O projeto consiste em um sistema de gerenciamento de produtos e vendas, com func
 
 -Registrar Usuários
 
-URL: http://localhost:8080/api/users/register
+URL: http://localhost:8080/api/auth/register
 
     {
       "email": "usuario1@email.com", 
@@ -32,13 +32,13 @@ URL: http://localhost:8080/api/users/register
 
 -Realizar o reset de senha
 
-URL: http://localhost:8080/api/users/reset-password-token
+URL: http://localhost:8080/api/auth/reset-password-token
 
     {
       "email": "user.email@example.com"
     }
   
-URL: http://localhost:8080/api/users/reset-password-token/confirm
+URL: http://localhost:8080/api/auth/reset-password-token/confirm
   
     {
       "token": "your-generated-token",
